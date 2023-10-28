@@ -143,6 +143,38 @@
             min-height: 100px;
         }
     </style>
+
+<?php
+  require_once 'conexion.php';
+  
+  
+      if(isset($_POST['insertar'])) {
+        $nombre = $_POST['nombre'];
+        $fecha = $_POST['fecha'];
+        $descripcion = $_POST['descripcion'];
+  
+          // Validar que los campos no estén vacíos
+          if (!empty($nombre) && !empty($fecha) && !empty($descripcion)) {
+              // Preparar la consulta SQL
+              $insert = $conn->prepare('INSERT INTO evento (nombre, fecha, descripcion) VALUES (?, ?, ?)');
+              $insert->bindParam(1, $nombre);
+              $insert->bindParam(2, $fecha);
+              $insert->bindParam(3, $descripcion);
+  
+              // Ejecutar la consulta y verificar el resultado
+                if ($insert->execute()) {
+                    echo "Registro exitoso";
+                } else {
+                    echo "Error al registrar";
+                }
+            } else {
+                echo "Por Favor llene todos los campos";
+            }
+      }
+ 
+  ?>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const eventForm = document.getElementById("event-form");
