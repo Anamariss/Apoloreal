@@ -111,7 +111,7 @@
             <a class="nav-link text-dark fst-italic" href="#">Ingresar</a>
           </li>
           <li class="nav-item px-2">
-            <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos.html">Eventos</a>
+            <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos.php">Eventos</a>
           <li class="nav-item px-2">
             <a class="nav-link  text-dark fst-italic" href="../Nosotros.html">Contactanos</a>
           </li>
@@ -127,7 +127,7 @@
   <section class="px-5">
 
     <div class="mt-4 p-3 bg-primary text-white rounded">
-      <h1 class="text-center fst-italic">ingresar</h1>
+      <h1 class="text-center fst-italic">ingresar asdfasdfs</h1>
     </div>
   
   </section>
