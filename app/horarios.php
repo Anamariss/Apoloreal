@@ -25,76 +25,201 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
+
 <body>
-    
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    
-   
-<title>Botón con Imagen</title>
-</head>
-<body>
-    <div class="boton-imagen">
-        <input type="file" id="input-imagen" accept="image/*">
-        <label for="input-imagen" class="boton-label">Seleccionar Imagen</label>
-        <img src="" id="imagen-preview" alt="Imagen previa">
-    
-   
-</div>
-    <script src="script.js"></script>
 
-    <style>
-      body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 50px;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
 
-.boton-imagen {
-    position: relative;
-    display: inline-block;
-}
 
-#input-imagen {
-    display: none;
-}
+  <title>Botón con Imagen</title>
+  </head>
 
-.boton-label {
-    cursor: pointer;
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-}
+  <body>
 
-#imagen-preview {
-    max-width: 100%;
-    max-height: 300px;
-    margin-top: 10px;
-}
 
-    </style>
-    <script>
-      const inputImagen = document.getElementById('input-imagen');
-const imagenPreview = document.getElementById('imagen-preview');
+    <?php
+    if (isset($_POST['insertar'])) {
+      if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+        $allowed_extensions = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+        $file_extension = strtolower(pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION));
+        if (!in_array($file_extension, $allowed_extensions)) {
+          echo "Error: Tipo de archivo no permitido. Solo se permiten imágenes jpg, jpeg, png, webp y gif.";
+          exit;
+        }
 
-inputImagen.addEventListener('change', (event) => {
-    const file = event.target.files[0];
+        $source = $_FILES['imagen']['tmp_name'];
 
-    if (file) {
-        const reader = new FileReader();
+        $destination = __DIR__ . '/horario/' . uniqid() . '.' . $file_extension;
 
-        reader.onload = (e) => {
-            imagenPreview.src = e.target.result;
-        };
+        if (!move_uploaded_file($source, $destination)) {
+          echo "Error: No se ha podido mover la imagen.";
+          exit;
+        }
 
-        reader.readAsDataURL(file);
-    } else {
-        imagenPreview.src = '';
+        require_once 'conexion.php';
+
+        $descripcion = $_POST['comentario'];
+        $imagen = $destination;
+
+        $insert = $conn->prepare('INSERT INTO horario (comentario, imagen) VALUES (?, ?)');
+        $insert->bindParam(1, $descripcion);
+        $insert->bindParam(2, $imagen);
+
+        if ($insert->execute()) {
+          echo 'Se subió el archivo exitosamente';
+          /*echo "<script>
+          $(document).ready(function () {
+          Swal.fire({
+           title: 'Exitoso',
+           text: 'Ha sido publicada correctamente',
+           icon: 'success',
+           confirmButtonText: 'Aceptar'
+          }).then((result) => {
+           if (result.isConfirmed) {
+           $(location).attr('href', 'homeadm?page=galeria');
+          }
+          });
+          });
+          </script>";*/
+        } else {
+          echo 'Error al subir el archivo';
+          /*echo "<script>
+          $(document).ready(function () {
+          Swal.fire({
+           title: 'Error',
+           text: 'No se pudo realizar la publicación',
+           icon: 'error',
+           confirmButtonText: 'Cerrar'
+          }).then((result) => {
+           if (result.isConfirmed) {
+           $(location).attr('href', 'homeadm?page=galeria');
+          }
+          });
+          });
+          </script>";*/
+        }
+      }
     }
-});
+    $conn = null;
+    ?>
+    <?php
+    require_once 'conexion.php';
+    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+    // Establece el modo de error PDO en excepción
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    /*Función Eliminar registro*/
+    if (isset($_GET['delete'])) {
+      $delete = $conn->prepare('DELETE FROM horario WHERE idhorario= ?');
+      $delete->bindParam(1, $_GET['delete']);
+      $delete->execute();
 
-    </script>
-</body>
+      if ($delete) {
+        echo 'Exito';
+        /*echo "<script>
+        Swal.fire({
+          icon: 'successs',
+          title: 'Exitoso...',
+          text: 'Se elimino correctamente!',
+        })
+        </script>";*/
+      } else {
+        echo "Error al borrar";
+      }
+    }
+    ?>
+
+    <form action="" method="POST" enctype="multipart/form-data">
+      <label for="imagen">Subir imagen</label><br>
+      <input type="file" id="file" name="imagen"><br>
+
+      <label for="comentario">Descripción de la imagen</label><br>
+      <input type="text" id="desc" name="comentario"><br>
+
+
+      <button type="submit" value="subir" name="insertar">Subir archivo</button>
+
+
+
+    </form>
+    <?php
+    require_once 'conexion.php';
+
+    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $result = $conn->prepare('SELECT * FROM horario');
+    $result->execute();
+
+    if ($result->rowCount() > 0) {
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        ?>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <?php
+            $file_extension = pathinfo($row['imagen'], PATHINFO_EXTENSION);
+            $destination = __DIR__ . 'horario/' . uniqid() . '.' . $file_extension;
+            $nombreArchivoImagen = basename($row['imagen']);
+            $rutaImagen = 'horario/' . $nombreArchivoImagen;
+
+            if (file_exists($rutaImagen)) {
+              ?>
+              <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image">
+
+              <?php
+            } else {
+              ?>
+              <p>Imagen no encontrada.</p>
+              <?php
+            }
+            ?>
+            <div class="card-body">
+              <h4>
+                <?php echo $row['comentario']; ?>
+              </h4>
+              <div class="text-center">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['idhorario']; ?>"
+                  title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i>Eliminar Datos</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <!-- Modal eliminar datos -->
+        <div class="modal fade" id="delete<?php echo $row['idhorario']; ?>">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Alerta de datos</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                Realmente desea eliminar el registro?:
+
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <a href="hadmin?page=horarios&delete=<?php echo $row['idhorario']; ?>" title="Aceptar"
+                  class="btn btn-success">Aceptar</a>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- Modal eliminar datos  -->
+
+        <?php
+      }
+    }
+    ?>
+
+  </body>
+
 </html>
