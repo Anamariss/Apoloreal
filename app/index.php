@@ -127,7 +127,7 @@
   <section class="px-5">
 
     <div class="mt-4 p-3 bg-primary text-white rounded">
-      <h1 class="text-center fst-italic">ingresar</h1>
+      <h1 class="text-center fst-italic">Ingresar</h1>
     </div>
   
   </section>
@@ -138,15 +138,10 @@
       <div class="mb-3 text-center">
         <label for="usuario" class="form-label fst-italic">Usuario</label>
         <input type="text" class="form-control" name="usuario" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-        <div id="emailHelp" class="form-text fst-italic">We'll never share your email with anyone else.</div>
       </div>
       <div class="mb-3 text-center">
         <label for="clave" class="form-label fst-italic">Contraseña</label>
         <input type="password" class="form-control" name="clave" id="exampleInputPassword1" required>
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
-        <label class="form-check-label fst-italic" for="exampleCheck1">Recordarme</label>
       </div>
       <div class="clearfix">
         <span class="float-start">
@@ -178,9 +173,8 @@
           <!-- Instagram -->
           <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike"
             style="background-color: #b31d1d;" href="https://www.youtube.com/@escuelademusicaamalfi-anti2320" role="button"><i class="bi bi-youtube"></i>
-          <!-- whatsapp -->
-          <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike"
-            style="background-color: #0df553;" href="" role="button"><i class="bi bi-whatsapp"></i></a>
+          </a>
+         
         </section>
         <!-- Section: Social media -->
         <!-- Grid container -->

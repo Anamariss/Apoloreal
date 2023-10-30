@@ -19,13 +19,15 @@
   <meta name="keyworks" content="SENA, sena, Sena, Web App, web app, WEB APP">
 
   <link rel="stylesheet" href="assets/css/bootstrap.css">
+  <link rel="stylesheet" href="horarios.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/bootstrap.bundle.js"></script>
   <script src="assets/js/nuevo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.all.min.js" integrity="sha256-jzDvWcciH8O/yLyupa+cLM4Vef9ktr0m/d1/5wLtVpY=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.min.css" integrity="sha256-VJuwjrIWHWsPSEvQV4DiPfnZi7axOaiWwKfXaJnR5tA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
-
 <body>
 
   <meta charset="UTF-8">
@@ -143,82 +145,93 @@
 
 
     </form>
-    <?php
-    require_once 'conexion.php';
-
-    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $result = $conn->prepare('SELECT * FROM horario');
-    $result->execute();
-
-    if ($result->rowCount() > 0) {
-      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        ?>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <?php
-            $file_extension = pathinfo($row['imagen'], PATHINFO_EXTENSION);
-            $destination = __DIR__ . 'horario/' . uniqid() . '.' . $file_extension;
-            $nombreArchivoImagen = basename($row['imagen']);
-            $rutaImagen = 'horario/' . $nombreArchivoImagen;
-
-            if (file_exists($rutaImagen)) {
-              ?>
-              <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image">
-
-              <?php
-            } else {
-              ?>
-              <p>Imagen no encontrada.</p>
-              <?php
-            }
-            ?>
-            <div class="card-body">
-              <h4>
-                <?php echo $row['comentario']; ?>
-              </h4>
-              <div class="text-center">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['idhorario']; ?>"
-                  title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i>Eliminar Datos</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-        <!-- Modal eliminar datos -->
-        <div class="modal fade" id="delete<?php echo $row['idhorario']; ?>">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-              <!-- Modal Header -->
-              <div class="modal-header">
-                <h4 class="modal-title">Alerta de datos</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-
-              <!-- Modal body -->
-              <div class="modal-body">
-                Realmente desea eliminar el registro?:
-
-              </div>
-
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                <a href="hadmin?page=horarios&delete=<?php echo $row['idhorario']; ?>" title="Aceptar"
-                  class="btn btn-success">Aceptar</a>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <!-- Modal eliminar datos  -->
-
+    <div class="container mt-1 mx-1">
+      <h2 class="mb-2">Publicaciones</h2>
+      <div class="row">
         <?php
-      }
-    }
-    ?>
+        $sql = "SELECT * FROM horario";
+        $result = $conn->query($sql);
+
+        if ($result->rowCount() > 0) {
+          while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            ?>
+            <div class="card col-lg-4 col-md-6 gallery-item mb-3" style="width: 450px">
+              <?php
+              $file_extension = pathinfo($row['imagen'], PATHINFO_EXTENSION);
+              $destination = __DIR__ . 'horario/' . uniqid() . '.' . $file_extension;
+              $nombreArchivoImagen = basename($row['imagen']);
+              $rutaImagen = 'horario/' . $nombreArchivoImagen;
+
+
+              if (file_exists($rutaImagen)) {
+                ?>
+                <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image" style="width: 100%">
+                <?php
+              } else {
+                ?>
+                <p>Imagen no encontrada.</p>
+                <?php
+              }
+              ?>
+              <div class="card-body col" class="row" class="py-5 px-5 ">
+                <h4>
+                  <?php echo $row['comentario']; ?>
+                </h4>
+                <div class="text-center">
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['idhorario']; ?>"
+                    title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i>Eliminar Datos</button>
+                  <button type="button" data-bs-toggle="modal" class="btn btn-primary"
+                    onclick="showImageModal('<?php echo $rutaImagen; ?>')" aria-label="Acercar"><i
+                      class="fas fa-eye"></i></button>
+                  <script>
+                    function showImageModal(imageSrc) {
+                      Swal.fire({
+                        title: '<?php echo $row['comentario'] ?>',
+                        imageUrl: imageSrc,
+                        imageWidth: 800,
+                        imageHeight: 800,
+                        imageAlt: '<?php echo $row['comentario'] ?>',
+                        showCloseButton: true,
+                        showConfirmButton: false
+                      });
+                    }
+                  </script>
+                </div>
+              </div>
+            </div>
+            <!-- Modal eliminar datos -->
+            <div class="modal fade" id="delete<?php echo $row['idhorario']; ?>">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Alerta de datos</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    Realmente desea eliminar el registro?:
+
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <a href="hadmin?page=horarios&delete=<?php echo $row['idhorario']; ?>" title="Aceptar"
+                      class="btn btn-success">Aceptar</a>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Modal eliminar datos  -->
+
+            <?php
+          }
+        }
+        ?>
 
   </body>
 

@@ -40,6 +40,19 @@
 
 
     <?php
+    
+    $file = 'prueba.pdf';
+    if (is_file($file)) {
+      $filename = "cv0descargado.pdf"; // el nombre con el que se descargará, puede ser diferente al original
+      /*header("Content-Type: application/octet-stream");*/
+      header("Content-Type: application/force-download");
+      header("Content-Disposition: attachment; filename=\"$filename\"");
+      readfile($file);
+    } else {
+      die("Error: no se encontró el archivo '$file'");
+    }
+
+
     if (isset($_POST['insertar'])) {
       if (isset($_FILES['documento']) && $_FILES['documento']['error'] === UPLOAD_ERR_OK) {
         $allowed_extensions = array('jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf');
@@ -51,7 +64,8 @@
 
         $source = $_FILES['documento']['tmp_name'];
 
-        $destination = __DIR__ . '/horario/' . uniqid() . '.' . $file_extension;
+        $destination = __DIR__ . '/partitura/' . uniqid() . '.' . $file_extension;
+        
 
         if (!move_uploaded_file($source, $destination)) {
           echo "Error: No se ha podido mover el documento.";
@@ -63,9 +77,11 @@
         $descripcion = $_POST['comentario'];
         $documento = $destination;
 
+        // echo "llega";die;
+
         $insert = $conn->prepare('INSERT INTO partitura (comentario, documento) VALUES (?, ?)');
         $insert->bindParam(1, $descripcion);
-        $insert->bindParam(2, $imagen);
+        $insert->bindParam(2, $documento);
 
         if ($insert->execute()) {
           echo 'Se subió el archivo exitosamente';
@@ -134,7 +150,7 @@
       <label for="documento">Subir documento</label><br>
       <input type="file" id="file" name="documento"><br>
 
-      <label for="comentario">Descripción de la imagen</label><br>
+      <label for="comentario"></label><br>
       <input type="text" id="desc" name="comentario"><br>
 
 
@@ -152,8 +168,11 @@
     $result = $conn->prepare('SELECT * FROM partitura');
     $result->execute();
 
+
+
     if ($result->rowCount() > 0) {
       while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        //var_dump($row);die;
         ?>
         <div class="col-md-4 mb-4">
           <div class="card">
@@ -162,6 +181,7 @@
             $destination = __DIR__ . 'partitura/' . uniqid() . '.' . $file_extension;
             $nombreArchivoImagen = basename($row['documento']);
             $rutaImagen = 'partitura/' . $nombreArchivoImagen;
+            
 
             if (file_exists($rutaImagen)) {
               ?>
@@ -174,6 +194,8 @@
               <?php
             }
             ?>
+
+            
             <div class="card-body">
               <h4>
                 <?php echo $row['comentario']; ?>
@@ -205,7 +227,7 @@
 
               <!-- Modal footer -->
               <div class="modal-footer">
-                <a href="hadmin?page=trabajos&delete=<?php echo $row['idpartitura']; ?>" title="Aceptar"
+                <a href="hadmin?page=trabajo&delete=<?php echo $row['idpartitura']; ?>" title="Aceptar"
                   class="btn btn-success">Aceptar</a>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
               </div>
@@ -219,6 +241,39 @@
       }
     }
     ?>
+    <?php
+include "conexion.php";
+
+// Obtener el nombre del archivo desde la URL
+$id = $_GET['id'];
+
+//buscar el archivo en la bd
+$sql = "SELECT * FROM partitura WHERE id = '$id'";
+$resultado = mysqli_query($conexion, $sql);
+
+if (mysqli_num_rows($resultado) == 1){
+    $fila = mysqli_fetch_assoc($resultado);
+    $archivo = $fila['documento'];
+    $ruta_archivo = "partitura/" . $archivo;
+
+    //Verificar que el archivo está en el servidor
+    if (file_exists($ruta_archivo)) {
+        //Enviar archivo al navegador
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' .$archivo . '"');
+    } else {
+        echo "El archivo no existe.";
+    }
+} else {
+    echo "El archivo no se encontró en la base de datos";
+}
+
+
+
+
+?>
+
+    
 
   </body>
 

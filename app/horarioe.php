@@ -1,47 +1,57 @@
-<?php
-      require_once 'conexion.php';
+<div class="container mt-1 mx-1">
+  <h2 class="mb-2">Publicaciones</h2>
+  <div class="row">
+    <?php
+    require_once 'conexion.php';
+    $sql = "SELECT * FROM horario";
+    $result = $conn->query($sql);
 
-      $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($result->rowCount() > 0) {
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        ?>
+        <div class="card col-lg-4 col-md-6 gallery-item mb-3" style="width: 450px">
+          <?php
+          $file_extension = pathinfo($row['imagen'], PATHINFO_EXTENSION);
+          $destination = __DIR__ . 'horario/' . uniqid() . '.' . $file_extension;
+          $nombreArchivoImagen = basename($row['imagen']);
+          $rutaImagen = 'horario/' . $nombreArchivoImagen;
 
-      $result = $conn->prepare('SELECT * FROM horario');
-      $result->execute();
 
-      if ($result->rowCount() > 0) {
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-          ?>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <?php
-              $file_extension = pathinfo($row['imagen'], PATHINFO_EXTENSION);
-              $destination = __DIR__ . 'horario/' . uniqid() . '.' . $file_extension;
-              $nombreArchivoImagen = basename($row['imagen']);
-              $rutaImagen = 'horario/' . $nombreArchivoImagen;
-
-              if (file_exists($rutaImagen)) {
-                ?>
-                <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image">
-
-                <?php
-              } else {
-                ?>
-                <p>Imagen no encontrada.</p>
-                <?php
-              }
+          if (file_exists($rutaImagen)) {
             ?>
-              <div class="card-body">
-                <h4>
-                  <?php echo $row['comentario']; ?>
-                </h4>
-                <div class="text-center">
-                  <button type="button" data-bs-toggle="modal" data-bs-target="#delete" title="Eliminar"
-                    class="btn btn-danger" title="Eliminar Datos"><i class="fas fa-trash"></i></button>
-                </div>
-              </div>
+            <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image" style="width: 100%">
+            <?php
+          } else {
+            ?>
+            <p>Imagen no encontrada.</p>
+            <?php
+          }
+          ?>
+          <div class="card-body col" class="row" class="py-5 px-5 ">
+            <h4>
+              <?php echo $row['comentario']; ?>
+            </h4>
+            <div class="text-center">
+              <button type="button" data-bs-toggle="modal" class="btn btn-primary"
+                onclick="showImageModal('<?php echo $rutaImagen; ?>')" aria-label="Acercar"><i
+                  class="fas fa-eye"></i></button>
+              <script>
+                function showImageModal(imageSrc) {
+                  Swal.fire({
+                    title: '<?php echo $row['comentario'] ?>',
+                    imageUrl: imageSrc,
+                    imageWidth: 800,
+                    imageHeight: 800,
+                    imageAlt: '<?php echo $row['comentario'] ?>',
+                    showCloseButton: true,
+                    showConfirmButton: false
+                  });
+                }
+              </script>
             </div>
           </div>
         </div>
-            <?php
-        }
+        <?php
+      }
     }
     ?>

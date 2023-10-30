@@ -122,6 +122,9 @@ if (is_array($data)) {
                     </ul>
                   </li>
                   <li class="nav-item my-1">
+                        <a href="hadmin?page=prueba" class="nav-link text-white">Prueba</a>
+                      </li>
+                  <li class="nav-item my-1">
                     <a href="hadmin?page=horarios" class="nav-link text-white" aria-current="page">
                       <i class="bi bi-clock"></i>
                       <span class="ms-2 d-none d-sm-inline">Horarios</span>

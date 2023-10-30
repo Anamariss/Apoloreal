@@ -25,7 +25,7 @@
                 <?php
               } else {
                 ?>
-                <p>Imagen no encontrada.</p>
+                <p>Documento no encontrada.</p>
                 <?php
               }
             ?>
