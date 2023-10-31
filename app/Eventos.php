@@ -137,63 +137,62 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card" style="width: 100;">
-          <img src="media/Banda.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-              <span class="probootstrap-date"><i class="bi bi-calendar"></i>"#"</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card" style="width: 100;">
-          <img src="media/estudiantina.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-              <span class="probootstrap-date"><i class="bi bi-calendar"></i>"#"</span>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </section>
+  <?php
+          require_once 'app/conexion.php';
+          $result = $conn->prepare('SELECT * FROM evento');
+          $result->execute();
 
-  <section class="container-fluid">
-    <div class="row">
-      <div class="col-md-4 p-2">
-        <div class="card" style="width: 100;">
-          <img src="media/guitarra.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-              <span class="probootstrap-date"><i class="bi bi-calendar"></i>"#"</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 p-2">
-        <div class="card" style="width: 100;">
-          <img src="media/Banda.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-              <span class="probootstrap-date"><i class="bi bi-calendar"></i>"#"</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 p-2">
-        <div class="card" style="width: 100;">
-          <img src="media/musica.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-              <span class="probootstrap-date"><i class="bi bi-calendar"></i>"#"</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+          while ($view = $result->fetch(PDO::FETCH_ASSOC)) {
+            ?>
+            <tr>
+              <td>
+                <?php echo $view["nombre"] ?>
+              </td>
+              <td>
+                <?php echo $view["fecha"] ?>
+              </td>
+              <td>
+                <?php echo $view["descripcion"] ?>
+              </td>
+              <td>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $view['idevento']; ?>" class="btn btn-outline-danger" title="Eliminar Datos"><i class="bi bi-trash3-fill"></i></button>
+              
+          </td>
+            <!-- Modal eliminar datos -->
+            <div class="modal fade" id="delete<?php echo $view['idadministrador']; ?>">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Alerta de datos</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    Realmente desea eliminar el registro con documento:
+                    <p><?php echo $view['documento']; ?></p>
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <a href="hadmin?page=listaa&delete=<?php echo $view['idadministrador']; ?>" title="Aceptar" class="btn btn-success">Aceptar</a>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+        <!-- Modal eliminar datos  -->
+              
+            </tr>
+            <?php
+            }
+            ?>
 
   <section class="container-fluid pt-2">
     <div class="bg-primary text-white rounded shadow mb-5 rounded border border-light py-3">
