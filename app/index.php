@@ -1,49 +1,47 @@
 <?php
-  require_once 'conexion.php';
-  session_start();
+require_once 'conexion.php';
+session_start();
 
-  if (isset($_POST['validar'])) {
-    $result = $conn->prepare('SELECT * FROM administrador WHERE usuario = ? UNION SELECT * FROM estudiante WHERE usuario = ?');
-    $result->bindParam(1, $_POST['usuario']);
-    $result->bindParam(2, $_POST['usuario']);
-  
-    $result->execute();
-   
-    if ($data = $result->fetch(PDO::FETCH_ASSOC)) {
-    
-      switch ($data['rol']) {
-        case 'Administrador':
-          //Verficamos si la contraseña es correcta
-          if (password_verify($_POST['clave'], $data['clave'])) {
+if (isset($_POST['validar'])) {
+  $result = $conn->prepare('SELECT * FROM administrador WHERE usuario = ? UNION SELECT * FROM estudiante WHERE usuario = ?');
+  $result->bindParam(1, $_POST['usuario']);
+  $result->bindParam(2, $_POST['usuario']);
 
-          
-            $_SESSION['administrador'] = $data['rol'];
-            header('location: hadmin.php');
-          } else {
-            echo "Contraseña incorrecta";
-          }
-          break;
-          case 'Estudiante':
-          
-            if (password_verify($_POST['clave'], $data['clave'])) {
+  $result->execute();
 
-             
-              $_SESSION['estudiante'] = $data['rol']; 
-              header('location: hest.php');
-            } else {
-              echo "Contraseña incorrecta";
-            }
-            break;
-        default:  
-          break;
-      }
-      
-    } else{
-      echo "Datos incorrectos";
+  if ($data = $result->fetch(PDO::FETCH_ASSOC)) {
+
+    switch ($data['rol']) {
+      case 'Administrador':
+        //Verficamos si la contraseña es correcta
+        if (password_verify($_POST['clave'], $data['clave'])) {
+
+
+          $_SESSION['administrador'] = $data['rol'];
+          header('location: hadmin.php');
+        } else {
+          echo "Contraseña incorrecta";
+        }
+        break;
+      case 'Estudiante':
+
+        if (password_verify($_POST['clave'], $data['clave'])) {
+
+
+          $_SESSION['estudiante'] = $data['rol'];
+          header('location: hest.php');
+        } else {
+          echo "Contraseña incorrecta";
+        }
+        break;
+      default:
+        break;
     }
+  } else {
+    echo "Datos incorrectos";
   }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="es-CO" data-bs-theme="light">
 
@@ -73,14 +71,14 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-light">
     <div class="container-fluid">
 
       <!--imagen-->
       <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="./">
-            <img src="media/logoo.png" alt="logo" width="60" height="60">
+            <img src="../media/logoo.png" alt="logo" width="60" height="60">
           </a>
           <!--imagen-->
           </a>
@@ -102,18 +100,22 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-6 mb-lg-0">
           <li class="nav-item px-2">
-            <a class="nav-link active text-dark fst-italic hola" aria-current="page" href="../index.html">Inicio</a>
+            <a class="nav-link active text-dark fst-italic hola" aria-current="page" href="../index">Inicio</a>
           </li>
           <li class="nav-item px-2">
-            <a class="nav-link  text-dark fst-italic" href="../procesos.html">Procesos</a>
+            <a class="nav-link  text-dark fst-italic" href="../procesos">Procesos</a>
           </li>
           <li class="nav-item px-2">
-            <a class="nav-link text-dark fst-italic" href="#">Ingresar</a>
+            <a class="nav-link text-dark fst-italic" href="./">Ingresar</a>
           </li>
           <li class="nav-item px-2">
-            <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos.html">Eventos</a>
+<<<<<<< HEAD
+            <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos">Eventos</a>
+=======
+            <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos.php">Eventos</a>
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
           <li class="nav-item px-2">
-            <a class="nav-link  text-dark fst-italic" href="../Nosotros.html">Contactanos</a>
+            <a class="nav-link  text-dark fst-italic" href="../Nosotros">Contactanos</a>
           </li>
 
           <!--final derecha-->
@@ -123,64 +125,80 @@
       </div>
     </div>
   </nav>
-
   <section class="px-5">
 
     <div class="mt-4 p-3 bg-primary text-white rounded">
-      <h1 class="text-center fst-italic">ingresar</h1>
+<<<<<<< HEAD
+      <h1 class="text-center fst-italic">Ingresar</h1>
+=======
+      <h1 class="text-center fst-italic">ingresar asdfasdfs</h1>
+>>>>>>> c7393479014797009c4c25b794779aeb0ba13a9e
     </div>
-  
+
   </section>
   <br>
   <section>
-  
+
     <form class="box p-5 px-1 w-50 m-auto" action="" method="POST" enctype="application/x-www-form-urlencoded">
       <div class="mb-3 text-center">
         <label for="usuario" class="form-label fst-italic">Usuario</label>
         <input type="text" class="form-control" name="usuario" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-        <div id="emailHelp" class="form-text fst-italic">We'll never share your email with anyone else.</div>
       </div>
       <div class="mb-3 text-center">
         <label for="clave" class="form-label fst-italic">Contraseña</label>
         <input type="password" class="form-control" name="clave" id="exampleInputPassword1" required>
       </div>
+<<<<<<< HEAD
       <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
         <label class="form-check-label fst-italic" for="exampleCheck1">Recordarme</label>
       </div>
+
+      <div class="py-2">
+=======
       <div class="clearfix">
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
         <span class="float-start">
           <a class="btn btn-primary pt-2" href="">volver</a>
-  
         </span>
-        <span class="float-end">
-          <button type="submit" class="btn btn-primary pt-2" name="validar">Iniciar sesion</button>
-  
-        
-          <br>
-        </span>
+        <div>
+          <span class="float-end">
+          
+            <button type="submit" class="btn btn-primary pt-2" name="validar">Inicia sesión</button>
+          </span>
+        </div>
+
       </div>
     </form>
-  
+
   </section>
   <br>
 
-    <!--fin de eventos-->
-    <footer class="bg-primary text-center text-white">
-      <!-- Grid container -->
-      <div class="container p-4 pb-0">
-        <!-- Section: Social media -->
-        <section class="mb-4">
-          <!-- Facebook -->
-          <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike"
-            style="background-color: #3b5998;" href="https://www.facebook.com/AngelJorgeMontoyaLuna?mibextid=ZbWKwL"
-            role="button"><i class="bi bi-facebook"></i>
+  <!--fin de eventos-->
+  <footer class="bg-primary text-center text-white">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+        <!-- Facebook -->
+        <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike" style="background-color: #3b5998;" href="https://www.facebook.com/AngelJorgeMontoyaLuna?mibextid=ZbWKwL" role="button"><i class="bi bi-facebook"></i>
           <!-- Instagram -->
+<<<<<<< HEAD
+          <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike" style="background-color: #b31d1d;" href="https://www.youtube.com/@escuelademusicaamalfi-anti2320" role="button"><i class="bi bi-youtube"></i>
+            <!-- whatsapp -->
+            <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike" style="background-color: #0df553;" href="" role="button"><i class="bi bi-whatsapp"></i></a>
+      </section>
+      <!-- Section: Social media -->
+      <!-- Grid container -->
+      <!-- Copyright -->
+      <div class="text-center p-3 bg-primary" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2023 Copyright:
+        <a class="text-white" href="app/iniciosesion.php">Apolo</a>
+=======
           <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike"
             style="background-color: #b31d1d;" href="https://www.youtube.com/@escuelademusicaamalfi-anti2320" role="button"><i class="bi bi-youtube"></i>
-          <!-- whatsapp -->
-          <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike"
-            style="background-color: #0df553;" href="" role="button"><i class="bi bi-whatsapp"></i></a>
+          </a>
+         
         </section>
         <!-- Section: Social media -->
         <!-- Grid container -->
@@ -190,9 +208,12 @@
           <a class="text-white" href="app/iniciosesion.php">Apolo</a>
         </div>
         <!-- Copyright -->
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
       </div>
-    </footer>
- 
+      <!-- Copyright -->
+    </div>
+  </footer>
+
 </body>
 
 </html>

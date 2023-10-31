@@ -112,7 +112,7 @@ if (isset($_GET['delete'])) {
   }
 ?>
   <div class="container pt-1">
-      <h1 class="text-center">Adultos Mayores</h1>
+      <h1 class="text-center">Estudiantes</h1>
       <table class="table table-striped table-bordered table-hover mt-1" id="tableresponsive" style="width: 100%;">
         <thead>
           <tr>
