@@ -109,7 +109,11 @@ if (isset($_POST['validar'])) {
             <a class="nav-link text-dark fst-italic" href="./">Ingresar</a>
           </li>
           <li class="nav-item px-2">
+<<<<<<< HEAD
             <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos">Eventos</a>
+=======
+            <a class="nav-link active text-dark fst-italic" aria-current="page" href="../Eventos.php">Eventos</a>
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
           <li class="nav-item px-2">
             <a class="nav-link  text-dark fst-italic" href="../Nosotros">Contactanos</a>
           </li>
@@ -124,7 +128,11 @@ if (isset($_POST['validar'])) {
   <section class="px-5">
 
     <div class="mt-4 p-3 bg-primary text-white rounded">
-      <h1 class="text-center fst-italic">ingresar</h1>
+<<<<<<< HEAD
+      <h1 class="text-center fst-italic">Ingresar</h1>
+=======
+      <h1 class="text-center fst-italic">ingresar asdfasdfs</h1>
+>>>>>>> c7393479014797009c4c25b794779aeb0ba13a9e
     </div>
 
   </section>
@@ -140,12 +148,16 @@ if (isset($_POST['validar'])) {
         <label for="clave" class="form-label fst-italic">Contraseña</label>
         <input type="password" class="form-control" name="clave" id="exampleInputPassword1" required>
       </div>
+<<<<<<< HEAD
       <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
         <label class="form-check-label fst-italic" for="exampleCheck1">Recordarme</label>
       </div>
 
       <div class="py-2">
+=======
+      <div class="clearfix">
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
         <span class="float-start">
           <a class="btn btn-primary pt-2" href="">volver</a>
         </span>
@@ -171,6 +183,7 @@ if (isset($_POST['validar'])) {
         <!-- Facebook -->
         <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike" style="background-color: #3b5998;" href="https://www.facebook.com/AngelJorgeMontoyaLuna?mibextid=ZbWKwL" role="button"><i class="bi bi-facebook"></i>
           <!-- Instagram -->
+<<<<<<< HEAD
           <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike" style="background-color: #b31d1d;" href="https://www.youtube.com/@escuelademusicaamalfi-anti2320" role="button"><i class="bi bi-youtube"></i>
             <!-- whatsapp -->
             <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike" style="background-color: #0df553;" href="" role="button"><i class="bi bi-whatsapp"></i></a>
@@ -181,6 +194,21 @@ if (isset($_POST['validar'])) {
       <div class="text-center p-3 bg-primary" style="background-color: rgba(0, 0, 0, 0.2);">
         © 2023 Copyright:
         <a class="text-white" href="app/iniciosesion.php">Apolo</a>
+=======
+          <a class="btn text-white btn-floating m-1" aria-label="Read more about Seminole tax hike"
+            style="background-color: #b31d1d;" href="https://www.youtube.com/@escuelademusicaamalfi-anti2320" role="button"><i class="bi bi-youtube"></i>
+          </a>
+         
+        </section>
+        <!-- Section: Social media -->
+        <!-- Grid container -->
+        <!-- Copyright -->
+        <div class="text-center p-3 bg-primary" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2023 Copyright:
+          <a class="text-white" href="app/iniciosesion.php">Apolo</a>
+        </div>
+        <!-- Copyright -->
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
       </div>
       <!-- Copyright -->
     </div>

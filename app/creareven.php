@@ -1,32 +1,18 @@
-<!DOCTYPE html>
-<html lang="es-CO" data-bs-theme="light">
-
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apolo</title>
-
-    <meta name="theme-color" content="#ff2e01">
-    <meta name="MobileOptimized" content="width">
-    <meta name="HandhledFriendly" content="true">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar" content="black-traslucent">
-
-    <!--Tags SEO-->
-    <meta name="author" content="Miproyecto">
-    <meta name="description" content="Aplicativo para enseñanza de Bootstrap">
-    <meta name="keyworks" content="SENA, sena, Sena, Web App, web app, WEB APP">
-
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/bootstrap.bundle.js"></script>
-    <script src="assets/js/nuevo.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <title>Notas de paz</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/bootstrap.bundle.js"></script>
+<link rel="stylesheet" href="Tform.css">
 </head>
-
 <body>
+<<<<<<< HEAD
     <form action="" method="POST" enctype="application/x-www-form-urlencoded">
         <section class="form-register">
             <h4>Añade Eventos</h4>
@@ -39,9 +25,56 @@
             </div>
             <ul id="event-list">
             </ul>
+=======
+<?php
+  require_once 'conexion.php';
+  
+  
+      if(isset($_POST['insertar'])) {
+        $nombre = $_POST['nombre'];
+        $fecha = $_POST['fecha'];
+        $descripcion = $_POST['descripcion'];
+  
+          // Validar que los campos no estén vacíos
+          if (!empty($nombre) && !empty($fecha) && !empty($descripcion)) {
+              // Preparar la consulta SQL
+              $insert = $conn->prepare('INSERT INTO evento (nombre, fecha, descripcion) VALUES (?, ?, ?)');
+              $insert->bindParam(1, $nombre);
+              $insert->bindParam(2, $fecha);
+              $insert->bindParam(3, $descripcion);
+  
+              // Ejecutar la consulta y verificar el resultado
+                if ($insert->execute()) {
+                    echo "Registro exitoso";
+                } else {
+                    echo "Error al registrar";
+                }
+            } else {
+                echo "Por Favor llene todos los campos";
+            }
+      }
+ 
+  ?>
+
+  <header class="list">
+</header>
+    <section id="form" class="box w-25 m-auto">
+        <h2>Crear eventos</h2>
+        <form action="" method="POST" enctype="application/x-www-form-urlencoded">
+           
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" required>
+          
+            <label for="fecha" class="form-label"></label>
+           <input type="date" id="event-date" name="fecha">
+           
+            <label for="descripcion" class="form-label">Descripción</label>
+            <input type="text" name="descripcion" required>
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
 
             <input class="controls" type="file" id="event-image" accept="image/*">
             <div id="image-preview">
+<<<<<<< HEAD
 
                 <img src="#" alt="Imagen"  id="uploaded-image">
             </div>
@@ -205,8 +238,14 @@
 
         });
     </script>
+=======
+                <img src="#" alt="Imagen" id="uploaded-image">
+           
+          <button type="submit" name="insertar">Enviar</button>
+          <p>Publicar</p> 
+        </form>
+    </section>
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
 </body>
-
 </html>
 
-</html>

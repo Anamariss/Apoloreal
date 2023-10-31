@@ -113,6 +113,114 @@
     ?>
 
 
+<<<<<<< HEAD
+=======
+    <div class="clearfix">
+
+      <span class="float-start">
+        <div class="container-fluid">
+          <div class="row flex-nowrap">
+            <div class="d-flex flex-column justify-content-between col-auto bg-dark min-vh-100">
+              <div class="mt-4">
+                <a href="" class="text-white d-none d-sm-inline text-decoration-none d-flex aling-items-center ms-3"
+                  role="button">
+                  <a href="crear.html" class="fs-5 d-none d-sm-inline text-center text-sm-start">Bienvenido</a>
+                </a>
+                <hr class="text-white d-none d-sm-block" />
+                <ul class="nav nav-pills flex-column mt-4 mt-sm-0" id="menu">
+                  <li class="nav-item my-1">
+                    <a href="hadmin" class="nav-link text-white" aria-current="page">
+                      <i class="bi bi-house"></i>
+                      <span class="ms-2 d-none d-sm-inline text-center text-sm-start">Inicio</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item my-1">
+                    <a href="hadmin?page=creareven" class="nav-link text-white" aria-current="page">
+                      <i class="bi bi-calendar-event"></i>
+                      <span class="ms-2 d-none d-sm-inline">Crear Evento</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item my-1 disabled">
+                    <a href="#sidemenu" data-bs-toggle="collapse" class="nav-link text-white">
+                      <i class="bi bi-file-earmark-person"></i>
+                      <span class="ms-2 d-none d-sm-inline">Registrar</span>
+                    </a>
+
+                    <ul class="nav collapse ms-1 flex-column" id="sidemenu" data-bs-parents="#menu">
+                      <li class="nav-item">
+                        <a href="hadmin?page=formstudent" class="nav-link text-white" aria-current="page">Alumnos</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="hadmin?page=formadmin" class="nav-link text-white">Administrador</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="hadmin?page=forminstrument" class="nav-link text-white">Instrumentos</a>
+                      </li>
+                    </ul>
+                 </li>
+
+                  <li class="nav-item my-1">
+                    <a href="#sidemenu" class="nav-link text-white" data-bs-toggle="collapse">
+                      <i class="bi bi-box"></i>
+                      <span class="ms-2 d-none d-sm-inline text-center text-sm-start">Inventario</span>
+                    </a>
+                    <ul class="nav collapse ms-1 flex-column" id="sidemenu" data-bs-parents="#menu">
+                      <li class="nav-item">
+                        <a href="hadmin?page=inventario" class="nav-link text-white" aria-current="page">Estudiantes</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="hadmin?page=listaa" class="nav-link text-white">Administradores</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="hadmin?page=listai" class="nav-link text-white">Instrumentos</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item my-1">
+                        <a href="hadmin?page=prueba" class="nav-link text-white">Prueba</a>
+                      </li>
+                  <li class="nav-item my-1">
+                    <a href="hadmin?page=horarios" class="nav-link text-white" aria-current="page">
+                      <i class="bi bi-clock"></i>
+                      <span class="ms-2 d-none d-sm-inline">Horarios</span>
+                    </a>
+                  </li>
+                  <li class="nav-item my-1">
+                    <a href="hadmin?page=trabajo" class="nav-link text-white" aria-current="page">
+                    <i class="bi bi-briefcase-fill"></i>
+                      <span class="ms-2 d-none d-sm-inline">Trabajos</span>
+                    </a>
+                    <a href="logout.php" class="nav-link text-white" aria-current="page">Cerrar Sesión</a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+    <main class="container p-5 mx-auto mt-5">
+
+<?php
+//Controlador del navbar
+$page=isset($_GET['page']) ? strtolower($_GET['page']) : 'hadmin';
+require_once './'.$page.'.php';
+
+if ($page=='hadmin') {
+    require_once 'inicio.php';
+}
+
+?>
+
+
+</main>
+
+   
+>>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
 
     <style>
       * {
