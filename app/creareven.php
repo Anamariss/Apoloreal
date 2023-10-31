@@ -27,131 +27,105 @@
 </head>
 
 <body>
-    <section class="pt-5">
-        <div class="container">
-            <h1>Cronograma de Eventos</h1>
-
+    <form action="" method="POST" enctype="application/x-www-form-urlencoded">
+        <section class="form-register">
+            <h4>Añade Eventos</h4>
             <div id="event-form">
 
-                <label for="nombre" class="form-label"></label>
-                <input type="text" id="event-name" name="nombre" placeholder="Nombre del evento" required>
+                <input class="controls" type="text" name="nombre" placeholder="Nombre del Evento" require>
 
-                <label for="fecha" class="form-label"></label>
-                <input type="date" id="event-date" name="fecha">
-
-                <a class="btn btn-primary p-1" href="Eventos.html">Agregar evento</a>
+                <input class="controls" type="date" id="event-date" name="fecha">
 
             </div>
             <ul id="event-list">
             </ul>
 
-            <input type="file" id="event-image" accept="image/*">
+            <input class="controls" type="file" id="event-image" accept="image/*">
             <div id="image-preview">
-                <img src="#" alt="Imagen" id="uploaded-image">
+
+                <img src="#" alt="Imagen"  id="uploaded-image">
             </div>
 
             <div id="comment-section">
                 <label for="descripcion" class="form-label" name="descripcion"></label>
-                <textarea id="event-comment" placeholder="Agregar un comentario"></textarea>
+                <textarea class="controls" id="event-comment" placeholder="Agregar un comentario" name="comentario"></textarea>
             </div>
-        </div>
-    </section>
+            </div>
+
+            <button class="botons" type="submit" name="insertar">Agregar Evento</button>
+
+        </section>
+
+        x
+    </form>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+        .form-register {
+            width: 400px;
+            background: #24303c;
+            padding: 30px;
+            margin: auto;
+            border-radius: 10px;
+            font-family: 'calibri';
+            color: white;
+            box-shadow: 10px 13px 37px #000;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        #event-form {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .form-register h4 {
+            font-size: 22px;
             margin-bottom: 20px;
         }
 
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-button {
-            background-color: #ff0000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-
-        }
-
-        #event-image {
-            margin-top: 20px;
-        }
-
-        #image-preview {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        #uploaded-image {
-            max-width: 100%;
-            max-height: 200px;
-            margin-top: 10px;
-        }
-
-        #comment-section {
-            margin-top: 20px;
-        }
-
-        textarea {
+        .controls {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: vertical;
-            min-height: 100px;
+            background: #24303c;
+            padding: 5px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            border: 1px solid #1f53c5;
+            font-family: 'calibri';
+            font-size: 18px;
+            color: white;
+        }
+
+
+
+        .form-register h4 {
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 40px;
+        }
+
+        .form-register a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .form-register a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .form-register .botons {
+            width: 100%;
+            background: #1f53c5;
+            border: none;
+            padding: 12px;
+            color: white;
+            margin: 16px 0;
+            font-size: 16px;
         }
     </style>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const eventForm = document.getElementById("event-form");
             const eventNameInput = document.getElementById("event-name");
             const eventDateInput = document.getElementById("event-date");
             const eventTimeInput = document.getElementById("event-time");
             const eventList = document.getElementById("event-list");
 
-            eventForm.addEventListener("submit", function (e) {
+            eventForm.addEventListener("submit", function(e) {
                 e.preventDefault();
                 const eventName = eventNameInput.value;
                 const eventDate = eventDateInput.value;
@@ -171,22 +145,22 @@
 
                     // Agregar evento para eliminar
                     const deleteButton = eventItem.querySelector(".delete-button");
-                    deleteButton.addEventListener("click", function () {
+                    deleteButton.addEventListener("click", function() {
                         eventList.removeChild(eventItem);
                     });
                 }
             });
         });
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
             const eventImageInput = document.getElementById("event-image");
             const imagePreview = document.getElementById("uploaded-image");
 
-            eventImageInput.addEventListener("change", function () {
+            eventImageInput.addEventListener("change", function() {
                 const file = eventImageInput.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         imagePreview.src = e.target.result;
                     };
                     reader.readAsDataURL(file);
@@ -194,11 +168,11 @@
             });
 
         });
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
             const eventCommentInput = document.getElementById("event-comment");
 
-            eventForm.addEventListener("submit", function (e) {
+            eventForm.addEventListener("submit", function(e) {
                 e.preventDefault();
                 const eventName = eventNameInput.value;
                 const eventDate = eventDateInput.value;
@@ -222,7 +196,7 @@
 
 
                     const deleteButton = eventItem.querySelector(".delete-button");
-                    deleteButton.addEventListener("click", function () {
+                    deleteButton.addEventListener("click", function() {
                         eventList.removeChild(eventItem);
                     });
                 }
@@ -230,7 +204,6 @@
 
 
         });
-
     </script>
 </body>
 

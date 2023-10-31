@@ -42,8 +42,7 @@
     
    
 </div>
-    <script src="script.js"></script>
-
+  
     <style>
       body {
     font-family: Arial, sans-serif;
@@ -96,5 +95,7 @@ inputImagen.addEventListener('change', (event) => {
 });
 
     </script>
+      <script src="script.js"></script>
+
 </body>
 </html>
