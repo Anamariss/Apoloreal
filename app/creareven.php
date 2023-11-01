@@ -27,6 +27,8 @@
             </ul>
 =======
 <?php
+
+
   require_once 'conexion.php';
   
   
@@ -34,14 +36,18 @@
         $nombre = $_POST['nombre'];
         $fecha = $_POST['fecha'];
         $descripcion = $_POST['descripcion'];
+        $imagen = $destination;
+        
+
   
           // Validar que los campos no estén vacíos
-          if (!empty($nombre) && !empty($fecha) && !empty($descripcion)) {
+          if (!empty($nombre) && !empty($fecha) && !empty($descripcion)  && !empty($imagne)) {
               // Preparar la consulta SQL
-              $insert = $conn->prepare('INSERT INTO evento (nombre, fecha, descripcion) VALUES (?, ?, ?)');
+              $insert = $conn->prepare('INSERT INTO evento (nombre, fecha, descripcion, imagen) VALUES (?, ?, ?, ?)');
               $insert->bindParam(1, $nombre);
               $insert->bindParam(2, $fecha);
               $insert->bindParam(3, $descripcion);
+              $insert->bindParam(4, $imagen);
   
               // Ejecutar la consulta y verificar el resultado
                 if ($insert->execute()) {
@@ -72,7 +78,7 @@
             <input type="text" name="descripcion" required>
 >>>>>>> 75080ca128ca4cd21ae940d3d603d407e0e6b7c9
 
-            <input class="controls" type="file" id="event-image" accept="image/*">
+            <input class="controls" name="imagen" type="file" id="event-image" accept="image/*">
             <div id="image-preview">
 <<<<<<< HEAD
 

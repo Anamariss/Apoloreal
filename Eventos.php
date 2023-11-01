@@ -136,58 +136,70 @@
     </div>
   </section>
   <?php
-          require_once 'app/conexion.php';
-          $result = $conn->prepare('SELECT * FROM evento');
-          $result->execute();
+    require_once 'app/conexion.php';
+    $sql = "SELECT * FROM evento ";
+    $result = $conn->query($sql);
 
-          while ($view = $result->fetch(PDO::FETCH_ASSOC)) {
+    if ($result->rowCount() > 0) {
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        ?>
+        <div class="card col-lg-4 col-md-6 gallery-item mb-3" style="width: 450px">
+          <?php
+          $file_extension = pathinfo($row['imagen'], PATHINFO_EXTENSION);
+          $destination = __DIR__ . 'eventos' . uniqid() . '.' . $file_extension;
+          $nombreArchivoImagen = basename($row['imagen']);
+          $rutaImagen = 'evento' . $nombreArchivoImagen;
+
+
+          if (file_exists($rutaImagen)) {
             ?>
-            <tr>
-              <td>
-                <?php echo $view["nombre"] ?>
-              </td>
-              <td>
-                <?php echo $view["fecha"] ?>
-              </td>
-              <td>
-                <?php echo $view["descripcion"] ?>
-              </td>
-              <td>
-              <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $view['idevento']; ?>" class="btn btn-outline-danger" title="Eliminar Datos"><i class="bi bi-trash3-fill"></i></button>
-              
-          </td>
-            <!-- Modal eliminar datos -->
-            <div class="modal fade" id="delete<?php echo $view['idadministrador']; ?>">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-
-                  <!-- Modal Header -->
-                  <div class="modal-header">
-                    <h4 class="modal-title">Alerta de datos</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-
-                  <!-- Modal body -->
-                  <div class="modal-body">
-                    Realmente desea eliminar el registro con documento:
-                    <p><?php echo $view['documento']; ?></p>
-                  </div>
-
-                  <!-- Modal footer -->
-                  <div class="modal-footer">
-                    <a href="hadmin?page=listaa&delete=<?php echo $view['idadministrador']; ?>" title="Aceptar" class="btn btn-success">Aceptar</a>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-        <!-- Modal eliminar datos  -->
-              
-            </tr>
+            <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image" style="width: 100%">
             <?php
-            }
+          } else {
             ?>
+            <p>Imagen no encontrada.</p>
+            <?php
+          }
+          ?>
+          <div class="card-body col" class="row" class="py-5 px-5 ">
+            <h4>
+              <?php echo $row['descripcion']; ?>
+            </h4>
+            <div class="text-center">
+              <button type="button" data-bs-toggle="modal" class="btn btn-primary"
+                onclick="showImageModal('<?php echo $rutaImagen; ?>')" aria-label="Acercar"><i
+                  class="fas fa-eye"></i></button>
+              <script>
+                function showImageModal(imageSrc) {
+                  Swal.fire({
+                    title: '<?php echo $row['comentario'] ?>',
+                    imageUrl: imageSrc,
+                    imageWidth: 800,
+                    imageHeight: 800,
+                    imageAlt: '<?php echo $row['comentario'] ?>',
+                    showCloseButton: true,
+                    showConfirmButton: false
+                  });
+                }
+                function showImageModal(imageSrc) {
+                  Swal.fire({
+                    title: '<?php echo $row['fecha'] ?>',
+                    imageUrl: imageSrc,
+                    imageWidth: 800,
+                    imageHeight: 800,
+                    imageAlt: '<?php echo $row['fecha '] ?>',
+                    showCloseButton: true,
+                    showConfirmButton: false
+                  });
+                }
+              </script>
+            </div>
+          </div>
+        </div>
+        <?php
+      }
+    }
+    ?>
 
   <section class="container-fluid pt-2">
     <div class="bg-primary text-white rounded shadow mb-5 rounded border border-light py-3">
