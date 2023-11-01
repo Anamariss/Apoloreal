@@ -19,13 +19,15 @@
   <meta name="keyworks" content="SENA, sena, Sena, Web App, web app, WEB APP">
 
   <link rel="stylesheet" href="assets/css/bootstrap.css">
+  <link rel="stylesheet" href="horarios.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/bootstrap.bundle.js"></script>
   <script src="assets/js/nuevo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.all.min.js" integrity="sha256-jzDvWcciH8O/yLyupa+cLM4Vef9ktr0m/d1/5wLtVpY=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.min.css" integrity="sha256-VJuwjrIWHWsPSEvQV4DiPfnZi7axOaiWwKfXaJnR5tA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
-
 <body>
 
   <meta charset="UTF-8">
@@ -40,48 +42,32 @@
 
 
     <?php
-    
-    $file = 'prueba.pdf';
-    if (is_file($file)) {
-      $filename = "cv0descargado.pdf"; // el nombre con el que se descargará, puede ser diferente al original
-      /*header("Content-Type: application/octet-stream");*/
-      header("Content-Type: application/force-download");
-      header("Content-Disposition: attachment; filename=\"$filename\"");
-      readfile($file);
-    } else {
-      die("Error: no se encontró el archivo '$file'");
-    }
-
-
     if (isset($_POST['insertar'])) {
-      if (isset($_FILES['documento']) && $_FILES['documento']['error'] === UPLOAD_ERR_OK) {
-        $allowed_extensions = array('jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf');
-        $file_extension = strtolower(pathinfo($_FILES['documento']['name'], PATHINFO_EXTENSION));
+      if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] === UPLOAD_ERR_OK) {
+        $allowed_extensions = array('jpg', 'pdf', 'docx');
+        $file_extension = strtolower(pathinfo($_FILES['archivo']['name'], PATHINFO_EXTENSION));
         if (!in_array($file_extension, $allowed_extensions)) {
-          echo "Error: Tipo de archivo no permitido. Solo se permiten imágenes jpg, jpeg, png, pdf, webp y gif.";
+          echo "Error: Tipo de archivo no permitido. Solo se permiten imágenes jpg, jpeg, png, webp y gif.";
           exit;
         }
 
-        $source = $_FILES['documento']['tmp_name'];
+        $source = $_FILES['archivo']['tmp_name'];
 
         $destination = __DIR__ . '/partitura/' . uniqid() . '.' . $file_extension;
-        
 
         if (!move_uploaded_file($source, $destination)) {
-          echo "Error: No se ha podido mover el documento.";
+          echo "Error: No se ha podido mover la imagen.";
           exit;
         }
 
         require_once 'conexion.php';
 
         $descripcion = $_POST['comentario'];
-        $documento = $destination;
+        $imagen = $destination;
 
-        // echo "llega";die;
-
-        $insert = $conn->prepare('INSERT INTO partitura (comentario, documento) VALUES (?, ?)');
+        $insert = $conn->prepare('INSERT INTO partitura (comentario, archivo) VALUES (?, ?)');
         $insert->bindParam(1, $descripcion);
-        $insert->bindParam(2, $documento);
+        $insert->bindParam(2, $imagen);
 
         if ($insert->execute()) {
           echo 'Se subió el archivo exitosamente';
@@ -147,10 +133,10 @@
     ?>
 
     <form action="" method="POST" enctype="multipart/form-data">
-      <label for="documento">Subir documento</label><br>
-      <input type="file" id="file" name="documento"><br>
+      <label for="archivo">Subir imagen</label><br>
+      <input type="file" id="file" name="archivo"><br>
 
-      <label for="comentario"></label><br>
+      <label for="comentario">Descripción del archivo</label><br>
       <input type="text" id="desc" name="comentario"><br>
 
 
@@ -159,121 +145,93 @@
 
 
     </form>
-    <?php
-    require_once 'conexion.php';
-
-    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $result = $conn->prepare('SELECT * FROM partitura');
-    $result->execute();
-
-
-
-    if ($result->rowCount() > 0) {
-      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        //var_dump($row);die;
-        ?>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <?php
-            $file_extension = pathinfo($row['documento'], PATHINFO_EXTENSION);
-            $destination = __DIR__ . 'partitura/' . uniqid() . '.' . $file_extension;
-            $nombreArchivoImagen = basename($row['documento']);
-            $rutaImagen = 'partitura/' . $nombreArchivoImagen;
-            
-
-            if (file_exists($rutaImagen)) {
-              ?>
-              <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image">
-
-              <?php
-            } else {
-              ?>
-              <p>Documento no encontrado</p>
-              <?php
-            }
-            ?>
-
-            
-            <div class="card-body">
-              <h4>
-                <?php echo $row['comentario']; ?>
-              </h4>
-              <div class="text-center">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['idpartitura']; ?>"
-                  title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i>Eliminar Datos</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-        <!-- Modal eliminar datos -->
-        <div class="modal fade" id="delete<?php echo $row['idpartitura']; ?>">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-              <!-- Modal Header -->
-              <div class="modal-header">
-                <h4 class="modal-title">Alerta de datos</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-
-              <!-- Modal body -->
-              <div class="modal-body">
-                Realmente desea eliminar el registro?:
-
-              </div>
-
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                <a href="hadmin?page=trabajo&delete=<?php echo $row['idpartitura']; ?>" title="Aceptar"
-                  class="btn btn-success">Aceptar</a>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <!-- Modal eliminar datos  -->
-
+    <div class="container mt-1 mx-1">
+      <h2 class="mb-2">Partituras</h2>
+      <div class="row">
         <?php
-      }
-    }
-    ?>
-    <?php
-include "conexion.php";
+        $sql = "SELECT * FROM partitura";
+        $result = $conn->query($sql);
 
-// Obtener el nombre del archivo desde la URL
-$id = $_GET['id'];
-
-//buscar el archivo en la bd
-$sql = "SELECT * FROM partitura WHERE id = '$id'";
-$resultado = mysqli_query($conexion, $sql);
-
-if (mysqli_num_rows($resultado) == 1){
-    $fila = mysqli_fetch_assoc($resultado);
-    $archivo = $fila['documento'];
-    $ruta_archivo = "partitura/" . $archivo;
-
-    //Verificar que el archivo está en el servidor
-    if (file_exists($ruta_archivo)) {
-        //Enviar archivo al navegador
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' .$archivo . '"');
-    } else {
-        echo "El archivo no existe.";
-    }
-} else {
-    echo "El archivo no se encontró en la base de datos";
-}
+        if ($result->rowCount() > 0) {
+          while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            ?>
+            <div class="card col-lg-4 col-md-6 gallery-item mb-3" style="width: 450px">
+              <?php
+              $file_extension = pathinfo($row['archivo'], PATHINFO_EXTENSION);
+              $destination = __DIR__ . 'partitura/' . uniqid() . '.' . $file_extension;
+              $nombreArchivoImagen = basename($row['archivo']);
+              $rutaImagen = 'partitura/' . $nombreArchivoImagen;
+              var_dump($nombreArchivoImagen);
 
 
+              if (file_exists($rutaImagen)) {
+                ?>
+                <img class="card-img-top" src="<?php echo $rutaImagen; ?>" alt="Card image" style="width: 100%">
+                <a href="<?php echo $rutaImagen; ?>"><img class="card-img-top" src="<?php echo '../media/logoo.jpg'; ?>" alt="Card image" style="width: 100%"></a>
+                
+                <?php
+              } else {
+                ?>
+                <p>Imagen no encontrada.</p>
+                <?php
+              }
+              ?>
+              <div class="card-body col" class="row" class="py-5 px-5 ">
+                <h4>
+                  <?php echo $row['comentario']; ?>
+                </h4>
+                <div class="text-center">
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['idpartitura']; ?>"
+                    title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i>Eliminar Datos</button>
+                  <script>
+                    function showImageModal(imageSrc) {
+                      Swal.fire({
+                        title: '<?php echo $row['comentario'] ?>',
+                        imageUrl: imageSrc,
+                        imageWidth: 800,
+                        imageHeight: 800,
+                        imageAlt: '<?php echo $row['comentario'] ?>',
+                        showCloseButton: true,
+                        showConfirmButton: false
+                      });
+                    }
+                  </script>
+                </div>
+              </div>
+            </div>
+            <!-- Modal eliminar datos -->
+            <div class="modal fade" id="delete<?php echo $row['idpartitura']; ?>">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
 
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Alerta de datos</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
 
-?>
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    Realmente desea eliminar el registro?:
 
-    
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <a href="hadmin?page=trabajo&delete=<?php echo $row['idpartitura']; ?>" title="Aceptar"
+                      class="btn btn-success">Aceptar</a>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Modal eliminar datos  -->
+
+            <?php
+          }
+        }
+        ?>
 
   </body>
 
